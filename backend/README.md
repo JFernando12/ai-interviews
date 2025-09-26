@@ -7,7 +7,6 @@ This application processes videos to extract questions by converting them to aud
 - **Video to Audio Conversion**: Extract audio from various video formats using MoviePy
 - **AWS S3 Integration**: Upload and store video/audio files in S3
 - **AWS Transcribe**: Convert audio to text with speaker identification
-- **AWS Comprehend**: Analyze text for entities, key phrases, and sentiment
 - **Amazon Bedrock** (Optional): Advanced AI-powered question extraction
 - **Question Extraction**: Multiple methods to identify questions in transcripts
 - **Batch Processing**: Process multiple videos in a directory
@@ -19,7 +18,7 @@ This application processes videos to extract questions by converting them to aud
 - **Amazon S3**: File storage and management
 - **Amazon Transcribe**: Audio-to-text transcription
 - **Amazon Comprehend**: Natural language processing
-- **Amazon Bedrock** (Optional): Advanced AI models for question extraction
+- **Amazon Bedrock** : Advanced AI models for question extraction
 
 ## Prerequisites
 
@@ -56,16 +55,6 @@ Your AWS user/role needs the following permissions:
                 "transcribe:StartTranscriptionJob",
                 "transcribe:GetTranscriptionJob",
                 "transcribe:ListTranscriptionJobs"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "comprehend:DetectEntities",
-                "comprehend:DetectKeyPhrases",
-                "comprehend:DetectSentiment",
-                "comprehend:DetectDominantLanguage"
             ],
             "Resource": "*"
         },

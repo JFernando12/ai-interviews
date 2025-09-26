@@ -117,7 +117,7 @@ class VideoProcessor:
             logger.error(f"File upload failed: {str(e)}")
             raise
     
-    def process_video(self, video_path: str, keep_local_audio: bool = False) -> Dict[str, str]:
+    def process_video(self, video_path: str) -> Dict[str, str]:
         """
         Complete video processing pipeline: extract audio and upload to S3
         
@@ -147,16 +147,14 @@ class VideoProcessor:
             )
             
             # Clean up local audio file if requested
-            if not keep_local_audio and os.path.exists(audio_path):
-                os.remove(audio_path)
-                logger.info(f"Local audio file removed: {audio_path}")
+            os.remove(audio_path)
+            logger.info(f"Local audio file removed: {audio_path}")
             
             results = {
                 'status': 'success',
                 'video_path': video_path,
                 'video_s3_uri': video_s3_uri,
                 'audio_s3_uri': audio_s3_uri,
-                'local_audio_path': audio_path if keep_local_audio else None
             }
             
             logger.info("Video processing completed successfully")

@@ -56,21 +56,9 @@ class VideoQuestionPipeline:
             logger.error(f"Failed to initialize pipeline: {str(e)}")
             raise
     
-    def test_aws_connections(self) -> Dict[str, Any]:
-        """
-        Test connections to all AWS services
-        
-        Returns:
-            Dictionary containing connection test results
-        """
-        logger.info("Testing AWS service connections")
-        return self.aws_clients.test_connections()
-    
     def process_video_file(self, 
                           video_path: str,
                           output_dir: Optional[str] = None,
-                          keep_intermediate_files: bool = False,
-                          use_bedrock: bool = False,
                           language_code: str = 'en-US') -> Dict[str, Any]:
         """
         Process a single video file through the complete pipeline
@@ -78,8 +66,6 @@ class VideoQuestionPipeline:
         Args:
             video_path: Path to the input video file
             output_dir: Optional output directory for results
-            keep_intermediate_files: Whether to keep audio files locally
-            use_bedrock: Whether to use Bedrock AI for question extraction
             language_code: Language code for transcription
             
         Returns:
@@ -103,7 +89,6 @@ class VideoQuestionPipeline:
             logger.info("Step 1: Processing video and extracting audio")
             video_results = self.video_processor.process_video(
                 video_path, 
-                keep_local_audio=keep_intermediate_files
             )
             
             results['steps']['video_processing'] = video_results
@@ -127,16 +112,9 @@ class VideoQuestionPipeline:
             # Step 3: Question Extraction
             logger.info("Step 3: Extracting questions from transcript")
             full_transcript = transcription_results.get('full_transcript', '')
-            transcript_data = {
-                'full_transcript': full_transcript,
-                'detailed_transcript': transcription_results.get('detailed_transcript', [])
-            }
             
             question_results = self.question_extractor.extract_questions(
                 full_transcript,
-                transcript_data=transcript_data,
-                use_bedrock=use_bedrock,
-                use_comprehend=False  # Disabled as requested
             )
             
             results['steps']['question_extraction'] = question_results
@@ -158,7 +136,7 @@ class VideoQuestionPipeline:
                     'transcript_length': len(full_transcript),
                     'total_questions_found': question_results.get('total_questions', 0),
                     'processing_duration_seconds': processing_duration,
-                    'aws_services_used': ['s3', 'transcribe'] + (['bedrock'] if use_bedrock else [])
+                    'aws_services_used': ['s3', 'transcribe', 'bedrock']
                 },
                 'questions': question_results.get('interviewer_questions', [])
             }
@@ -210,82 +188,6 @@ class VideoQuestionPipeline:
             
             return results
     
-    def batch_process_videos(self, 
-                           video_directory: str,
-                           output_dir: Optional[str] = None,
-                           file_extensions: Optional[list] = None,
-                           **processing_kwargs) -> Dict[str, Any]:
-        """
-        Process multiple video files in a directory
-        
-        Args:
-            video_directory: Directory containing video files
-            output_dir: Optional output directory for results
-            file_extensions: List of file extensions to process
-            **processing_kwargs: Additional arguments for process_video_file
-            
-        Returns:
-            Batch processing results
-        """
-        if file_extensions is None:
-            file_extensions = self.config.SUPPORTED_VIDEO_FORMATS
-        
-        logger.info(f"Starting batch processing of videos in: {video_directory}")
-        
-        video_files = []
-        for ext in file_extensions:
-            video_files.extend(Path(video_directory).glob(f"*{ext}"))
-        
-        if not video_files:
-            logger.warning(f"No video files found in directory: {video_directory}")
-            return {
-                'status': 'warning',
-                'message': 'No video files found',
-                'results': []
-            }
-        
-        batch_results = {
-            'status': 'processing',
-            'total_files': len(video_files),
-            'processed_files': 0,
-            'successful_files': 0,
-            'failed_files': 0,
-            'results': []
-        }
-        
-        for video_file in video_files:
-            try:
-                logger.info(f"Processing file {batch_results['processed_files'] + 1}/{len(video_files)}: {video_file.name}")
-                
-                result = self.process_video_file(
-                    str(video_file),
-                    output_dir=output_dir,
-                    **processing_kwargs
-                )
-                
-                batch_results['results'].append(result)
-                batch_results['processed_files'] += 1
-                
-                if result['status'] == 'success':
-                    batch_results['successful_files'] += 1
-                else:
-                    batch_results['failed_files'] += 1
-                    
-            except Exception as e:
-                logger.error(f"Failed to process {video_file.name}: {str(e)}")
-                batch_results['results'].append({
-                    'video_path': str(video_file),
-                    'status': 'error',
-                    'error_message': str(e)
-                })
-                batch_results['processed_files'] += 1
-                batch_results['failed_files'] += 1
-        
-        batch_results['status'] = 'completed'
-        logger.info(f"Batch processing completed: {batch_results['successful_files']}/{batch_results['total_files']} files processed successfully")
-        
-        return batch_results
-    
     def _save_results_to_file(self, results: Dict[str, Any], output_dir: str, video_name: str):
         """Save processing results to a JSON file"""
         try:
@@ -324,30 +226,13 @@ def main():
     parser = argparse.ArgumentParser(description='AI Interviews Video Processing Pipeline')
     parser.add_argument('video_path', nargs='?', help='Path to video file or directory')
     parser.add_argument('--output-dir', help='Output directory for results')
-    parser.add_argument('--batch', action='store_true', help='Process directory of videos')
-    parser.add_argument('--keep-files', action='store_true', help='Keep intermediate audio files')
-    parser.add_argument('--use-bedrock', action='store_true', default=True, help='Use Bedrock AI for question extraction (default: enabled)')
-    parser.add_argument('--no-bedrock', action='store_true', help='Disable Bedrock AI and skip question extraction')
     parser.add_argument('--language', default='en-US', help='Language code for transcription')
-    parser.add_argument('--test-connections', action='store_true', help='Test AWS connections only')
     
     args = parser.parse_args()
     
     try:
         # Initialize pipeline
         pipeline = VideoQuestionPipeline()
-        
-        # Test connections if requested
-        if args.test_connections:
-            logger.info("Testing AWS connections...")
-            connection_results = pipeline.test_aws_connections()
-            
-            print("\n=== AWS Connection Test Results ===")
-            for service, result in connection_results.items():
-                status = "✓" if result['status'] == 'success' else "✗"
-                print(f"{status} {service}: {result['message']}")
-            
-            return
         
         # Check if video_path is provided for processing
         if not args.video_path:
@@ -356,40 +241,23 @@ def main():
             return 1
         
         # Process videos
-        if args.batch:
-            logger.info(f"Starting batch processing of directory: {args.video_path}")
-            results = pipeline.batch_process_videos(
-                args.video_path,
-                output_dir=args.output_dir,
-                keep_intermediate_files=args.keep_files,
-                use_bedrock=args.use_bedrock and not args.no_bedrock,
-                language_code=args.language
-            )
-        else:
-            logger.info(f"Starting single video processing: {args.video_path}")
-            results = pipeline.process_video_file(
-                args.video_path,
-                output_dir=args.output_dir,
-                keep_intermediate_files=args.keep_files,
-                use_bedrock=args.use_bedrock and not args.no_bedrock,
-                language_code=args.language
-            )
+        logger.info(f"Starting single video processing: {args.video_path}")
+        results = pipeline.process_video_file(
+            args.video_path,
+            output_dir=args.output_dir,
+            language_code=args.language
+        )
         
         # Print summary
         print("\n=== Processing Summary ===")
-        if args.batch:
-            print(f"Total files: {results['total_files']}")
-            print(f"Successful: {results['successful_files']}")
-            print(f"Failed: {results['failed_files']}")
+        if results['status'] == 'success':
+            summary = results['summary']
+            print(f"✓ Processing completed successfully")
+            print(f"  Video duration: {summary['video_duration_seconds']:.1f} seconds")
+            print(f"  Questions found: {summary['total_questions_found']}")
+            print(f"  Processing time: {results['processing_duration_seconds']:.1f} seconds")
         else:
-            if results['status'] == 'success':
-                summary = results['summary']
-                print(f"✓ Processing completed successfully")
-                print(f"  Video duration: {summary['video_duration_seconds']:.1f} seconds")
-                print(f"  Questions found: {summary['total_questions_found']}")
-                print(f"  Processing time: {results['processing_duration_seconds']:.1f} seconds")
-            else:
-                print(f"✗ Processing failed: {results['error_message']}")
+            print(f"✗ Processing failed: {results['error_message']}")
         
         if args.output_dir:
             print(f"Results saved to: {args.output_dir}")

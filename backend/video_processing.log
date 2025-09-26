@@ -1,0 +1,144 @@
+2025-09-26 16:12:23,106 - __main__ - INFO - Initializing Video Question Pipeline
+2025-09-26 16:12:23,106 - __main__ - INFO - Pipeline initialized successfully
+2025-09-26 16:12:23,107 - __main__ - INFO - Starting single video processing: video.mkv
+2025-09-26 16:12:23,107 - __main__ - INFO - Starting pipeline processing for video: video.mkv
+2025-09-26 16:12:23,107 - __main__ - INFO - Step 1: Processing video and extracting audio
+2025-09-26 16:12:23,107 - video_processor - INFO - Starting video processing for: video.mkv
+2025-09-26 16:12:23,107 - video_processor - INFO - Extracting audio from video.mkv
+2025-09-26 16:12:26,589 - video_processor - INFO - Audio extracted successfully: video_audio.wav
+2025-09-26 16:12:26,591 - video_processor - INFO - Uploading video.mkv to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:12:27,008 - aws_clients - INFO - S3 client initialized successfully
+2025-09-26 16:12:27,569 - video_processor - ERROR - File upload failed: Failed to upload video.mkv to jfernando12-ai-interviews/videos/video.mkv: An error occurred (InvalidAccessKeyId) when calling the CreateMultipartUpload operation: The AWS Access Key Id you provided does not exist in our records.
+2025-09-26 16:12:27,569 - video_processor - ERROR - Video processing failed: Failed to upload video.mkv to jfernando12-ai-interviews/videos/video.mkv: An error occurred (InvalidAccessKeyId) when calling the CreateMultipartUpload operation: The AWS Access Key Id you provided does not exist in our records.
+2025-09-26 16:12:27,569 - __main__ - ERROR - Pipeline processing failed: Video processing failed: Failed to upload video.mkv to jfernando12-ai-interviews/videos/video.mkv: An error occurred (InvalidAccessKeyId) when calling the CreateMultipartUpload operation: The AWS Access Key Id you provided does not exist in our records.
+2025-09-26 16:12:27,571 - __main__ - INFO - Results saved to: results/video_results.json
+2025-09-26 16:13:34,253 - __main__ - INFO - Initializing Video Question Pipeline
+2025-09-26 16:13:34,253 - __main__ - INFO - Pipeline initialized successfully
+2025-09-26 16:13:34,253 - __main__ - INFO - Starting single video processing: video.mkv
+2025-09-26 16:13:34,254 - __main__ - INFO - Starting pipeline processing for video: video.mkv
+2025-09-26 16:13:34,254 - __main__ - INFO - Step 1: Processing video and extracting audio
+2025-09-26 16:13:34,254 - video_processor - INFO - Starting video processing for: video.mkv
+2025-09-26 16:13:34,254 - video_processor - INFO - Extracting audio from video.mkv
+2025-09-26 16:13:37,516 - video_processor - INFO - Audio extracted successfully: video_audio.wav
+2025-09-26 16:13:37,517 - video_processor - INFO - Uploading video.mkv to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:13:37,864 - aws_clients - INFO - S3 client initialized successfully
+2025-09-26 16:13:52,792 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/videos/video.mkv
+2025-09-26 16:13:52,793 - video_processor - INFO - Uploading video_audio.wav to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:13:56,933 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:13:56,943 - video_processor - INFO - Local audio file removed: video_audio.wav
+2025-09-26 16:13:56,943 - video_processor - INFO - Video processing completed successfully
+2025-09-26 16:13:56,943 - __main__ - INFO - Step 2: Transcribing audio to text
+2025-09-26 16:13:56,943 - audio_transcriber - INFO - Starting audio transcription for: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:13:56,944 - audio_transcriber - INFO - Starting transcription job: video-transcription-0788044d
+2025-09-26 16:13:56,960 - aws_clients - INFO - Transcribe client initialized successfully
+2025-09-26 16:13:57,609 - audio_transcriber - INFO - Transcription job started successfully: video-transcription-0788044d
+2025-09-26 16:13:57,610 - audio_transcriber - INFO - Waiting for transcription job to complete: video-transcription-0788044d
+2025-09-26 16:13:57,822 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:14:28,250 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:14:58,722 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:15:29,176 - audio_transcriber - INFO - Transcription job completed: video-transcription-0788044d
+2025-09-26 16:15:29,239 - audio_transcriber - INFO - Downloading transcript from: https://s3.us-east-1.amazonaws.com/aws-transcribe-us-east-1-prod/947403101409/video-transcription-0788044d/0e0d2e9f-9734-41dc-b308-1bdeed161f05/asrOutput.json?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA4aCXVzLWVhc3QtMSJIMEYCIQDCauxZCt7y5qFT3VjZ%2FvxriyEuyJumwBl8EHdGFwbCxgIhAImyATR3LSaXJ0JwBcFuwxRh65bdxTnR2ikivQDH5iHlKrsFCJf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQBBoMMjc2NjU2NDMzMTUzIgxik5eKr60qT6iOLJcqjwWu3ndJ%2BH3U4z5qGz1cxZ5KEHW6ElffKzOyFaPnop4QGJOnltqMkq8f6aaBxAR7N92MukQB4epGDe48Q%2BbKCxNe6lYoXz7OLKNkPFbmnHKFnzutMrdqrbFpdP5Q3BeYMZ%2ByEEB3mrzrroBSWEBhlw4sTalfW4a3qU2U8RAbvMLXh6rjCUahkKiSg1AYWv12qJ9ixc4pSKrVC2bqu12pQ7TNAmpg7ayj8UYTSQE3m1xu0NrJ5PB4IT12AyXbBGkdkwuft3vJTm21PhY1EyrwH7%2FAqbpa2i%2By8qmDaomAdwHVFeSQpYOul0uDxHBK1aUFLpFSclyJa5NbCJdpXW%2FI9wXIZl8vLB6NN6F8hn5y3S6vgsUOEz6nxMf91ROVNtjd2EErT1rKyztvAAhUoafLpm0erKTUQAhJr8PrZkaVESQ9yd5n2nyLI5aWqfWG1dmh%2FY%2F4pxVNts3pl%2BFAW4Tzt7kvHlq7HdnVFVYav0WLgIftKBPTMFSAQWAXN9JCmdW6sxhm%2Bwyog%2BnJXYe7WSp7P3eU3mkOtLN%2FjXdaxNHZKy8aAauaBsZfGryRYiDhvtIKQZkNf47ewhagUvJbOfBVmimrn9Ek754ItMautF%2BPqSnGhSg1rMmU%2F7jyn3cj5naWpHKtnob2PX4CqAWAutEXKPXb2PE15O8SozvVItr9jd36gG7evpLpv5wqYls58gaenQWEQaweQTitqFuBc3mpkOk9PlaBKbr7XFiWSeIl1j%2BtWr%2Fl48EXLmfynIpecc4o0FClb280rlny4vakSdvAQ0Ol5LoXnVLnnXXg22BwOO8upzhn3CFbBWkwnfjXiX6BQ312aS7F9iY7umqTqHDToSxM4YXheoHLJun5PT4Tn7wJMNWI3MYGOrABNg0oE%2ByhfP%2BPuDaEN7nWIllVfa4Be5Sb0HMK3TwXy0ZIf6FzBFNq6PAyFOTc1UpVyZq%2BO6ubAGsUOKfTASfmHj7qKHK72SHDbtPPYPgRp40FiRJrh1NaeLi2zdyKSodPXhR8bbteg6kqoq09oPH4Hzd1ZbGgnIC4y6NT8AQOQqnXOhNXZKBuXY7TjfPzGYp4hDuwYUZ9ocXgshje70%2BlPChl%2Fy%2BI0SqKCEzlqkt2mac%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250926T221528Z&X-Amz-SignedHeaders=host&X-Amz-Expires=900&X-Amz-Credential=ASIAUA2QCFAAVMZJLICU%2F20250926%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=742bed1ea19dcb5a912205da43c3fc8ba4c8755dfacb6a2e47883f8043ce2879
+2025-09-26 16:15:30,405 - __main__ - INFO - Step 3: Extracting questions from transcript
+2025-09-26 16:15:30,405 - __main__ - ERROR - Pipeline processing failed: QuestionExtractor.extract_questions() got an unexpected keyword argument 'transcript_data'
+2025-09-26 16:15:30,406 - __main__ - INFO - Results saved to: results/video_results.json
+2025-09-26 16:17:26,705 - __main__ - INFO - Initializing Video Question Pipeline
+2025-09-26 16:17:26,705 - __main__ - INFO - Pipeline initialized successfully
+2025-09-26 16:17:26,706 - __main__ - INFO - Starting single video processing: video.mkv
+2025-09-26 16:17:26,706 - __main__ - INFO - Starting pipeline processing for video: video.mkv
+2025-09-26 16:17:26,706 - __main__ - INFO - Step 1: Processing video and extracting audio
+2025-09-26 16:17:26,706 - video_processor - INFO - Starting video processing for: video.mkv
+2025-09-26 16:17:26,706 - video_processor - INFO - Extracting audio from video.mkv
+2025-09-26 16:17:30,336 - video_processor - INFO - Audio extracted successfully: video_audio.wav
+2025-09-26 16:17:30,337 - video_processor - INFO - Uploading video.mkv to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:17:30,655 - aws_clients - INFO - S3 client initialized successfully
+2025-09-26 16:17:49,308 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/videos/video.mkv
+2025-09-26 16:17:49,309 - video_processor - INFO - Uploading video_audio.wav to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:17:53,164 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:17:53,175 - video_processor - INFO - Local audio file removed: video_audio.wav
+2025-09-26 16:17:53,175 - video_processor - INFO - Video processing completed successfully
+2025-09-26 16:17:53,176 - __main__ - INFO - Step 2: Transcribing audio to text
+2025-09-26 16:17:53,176 - audio_transcriber - INFO - Starting audio transcription for: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:17:53,176 - audio_transcriber - INFO - Starting transcription job: video-transcription-df2536d6
+2025-09-26 16:17:53,185 - aws_clients - INFO - Transcribe client initialized successfully
+2025-09-26 16:17:53,758 - audio_transcriber - INFO - Transcription job started successfully: video-transcription-df2536d6
+2025-09-26 16:17:53,759 - audio_transcriber - INFO - Waiting for transcription job to complete: video-transcription-df2536d6
+2025-09-26 16:17:53,931 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:18:24,378 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:18:54,924 - audio_transcriber - INFO - Transcription job completed: video-transcription-df2536d6
+2025-09-26 16:18:54,959 - audio_transcriber - INFO - Downloading transcript from: https://s3.us-east-1.amazonaws.com/aws-transcribe-us-east-1-prod/947403101409/video-transcription-df2536d6/08a4587f-e48b-49c0-9742-ec9d25c5aa8d/asrOutput.json?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA4aCXVzLWVhc3QtMSJGMEQCIGCHAyD5Sp0vJQQuJMuKrmokwAWJacjN1T%2FDwQg5xnPsAiAHh9cWn7aoiVtK6r5sM5YGbeAznbJIlRIs74qgFpbUdiq5BQiW%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAQaDDI3NjY1NjQzMzE1MyIMdxZRXA855O%2B7OXwZKo0FkD23f6WF6LhBarI5Cx4VwQ9QgEeJjZryaFv3l7EEZQIFHGJY%2Ff3VMlMM0VNUMz07qnd%2BG22NkKfY1X27Cn8w3v%2B%2FYvZyM2fHa8hNkzByD7SsDXf%2FHBMDffopN%2BLq0XMH%2BkqzxgaywITrBC%2FNW3tGbREDZzwsZ37Vd4jNbZXAuZvbsj%2FhCwVsk%2FuIhLZW5Aw0W3GMnnge%2B1jNrvbM1mLMdng4Tk%2Bfd2EMqfZ95wYvhkD025xiYJYFs29%2BO%2BQrC56rxD7U1%2BCHLoWk0bNfrI8OQXJmCqiNUwWuMGQZjNPZUqLXuxWPklUfXo5o7qj%2F3ktNO9ljlvylD8kYIkj5FhvsSVCOrs9swKFmTk3dd4EJmtW5HL6UV0r6%2B8WY%2FsQWLsA8gFaic2tzFGQhypwpEID0X8Msc3Wj2nY0JX70wE22nPc7nBKZlTHrzvJDjn5bSkozqv%2B9VoDOVKPnqYHsnDa3ob%2FkcB1Sxw8gCVyUSSaKmcpo5SBH%2BIL%2Fncbf9gzM5JDx%2Bo%2FIoRViP8kZuhvL1MLiTGejuWUDAazaG783TNjVNrztJ5EoEs5vJt9NpYrPMcl1p1VCQlPc8I66Z5qsZRmln750SdR%2Fh4FCXsikWmW5l%2BZj8nV9iz%2FQ7hMacfxJYLbMK0RbhGUOAM%2FYqeYMk5mo5DwHM%2F%2BEgeRClDjXxlreQHScvnLZbEf0O35WE1d5fVU1nrSDgyis9h9BCxb3nymVlw5owB46yCqDoX%2FvUu5Odv%2F%2B%2FMgZTq%2FojLqP22Vg1uBfaNAq0HJxgRf2QcX8zIvOehrpQBY6JYcYfGzDJYPAVtu817QCqZ33arak1Q%2F0leAgGR8sYvgjWFkStAcO3zngW8r1ZaiVCH540vAB%2BOQwh4fcxgY6sgEAy82NAiY0AriIXci4Ki7WdsB1dNmu%2ByITaFm97VbhScOEvkY%2BDZDYUa9v7RoiATUz%2FJVDG%2F1g6wk6STmI7MHpaICy81vRA%2BsrICelSpIAX7uVP3ot7aWpq4j%2Bg7MWOJcTIor6YleJXnrRFwGPguLFNpjZXZi7wPBXIOCWEr8MqAE5jYNWMwdHkJ3MbEwQ1WdsWlWSeQkPwfkQDWO1BfYJe%2FOm2MldY0df8fSAOrzwmbgA&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250926T221854Z&X-Amz-SignedHeaders=host&X-Amz-Expires=900&X-Amz-Credential=ASIAUA2QCFAA7TFLQFIV%2F20250926%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=3bad985cb774dde0478a4b575f0b135fe02b9cb9a524cf246f7c3b63435add55
+2025-09-26 16:18:56,058 - __main__ - INFO - Step 3: Extracting questions from transcript
+2025-09-26 16:18:56,058 - question_extractor - INFO - Starting simplified question extraction using Bedrock AI
+2025-09-26 16:18:56,073 - aws_clients - INFO - Bedrock client initialized successfully
+2025-09-26 16:19:00,274 - question_extractor - INFO - Extracted 13 questions using Bedrock AI
+2025-09-26 16:19:00,275 - question_extractor - INFO - Question extraction completed: 13 interviewer questions found
+2025-09-26 16:19:00,276 - __main__ - INFO - Step 4: Generating final results
+2025-09-26 16:19:00,663 - __main__ - INFO - Results saved to: results/video_results.json
+2025-09-26 16:19:00,664 - __main__ - INFO - Pipeline processing completed successfully in 93.57 seconds
+2025-09-26 16:30:08,692 - __main__ - INFO - Initializing Video Question Pipeline
+2025-09-26 16:30:08,692 - __main__ - INFO - Pipeline initialized successfully
+2025-09-26 16:30:08,692 - __main__ - INFO - Starting single video processing: video.mkv
+2025-09-26 16:30:08,692 - __main__ - INFO - Starting pipeline processing for video: video.mkv
+2025-09-26 16:30:08,693 - __main__ - INFO - Step 1: Processing video and extracting audio
+2025-09-26 16:30:08,693 - video_processor - INFO - Starting video processing for: video.mkv
+2025-09-26 16:30:08,693 - video_processor - INFO - Extracting audio from video.mkv
+2025-09-26 16:30:12,180 - video_processor - INFO - Audio extracted successfully: video_audio.wav
+2025-09-26 16:30:12,180 - video_processor - INFO - Uploading video.mkv to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:30:12,496 - aws_clients - INFO - S3 client initialized successfully
+2025-09-26 16:30:34,875 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/videos/video.mkv
+2025-09-26 16:30:34,876 - video_processor - INFO - Uploading video_audio.wav to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:30:39,277 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:30:39,288 - video_processor - INFO - Local audio file removed: video_audio.wav
+2025-09-26 16:30:39,288 - video_processor - INFO - Video processing completed successfully
+2025-09-26 16:30:39,288 - __main__ - INFO - Step 2: Transcribing audio to text
+2025-09-26 16:30:39,288 - audio_transcriber - INFO - Starting audio transcription for: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:30:39,289 - audio_transcriber - INFO - Starting transcription job: video-transcription-4ef448e9
+2025-09-26 16:30:39,297 - aws_clients - INFO - Transcribe client initialized successfully
+2025-09-26 16:30:39,905 - audio_transcriber - INFO - Transcription job started successfully: video-transcription-4ef448e9
+2025-09-26 16:30:39,905 - audio_transcriber - INFO - Waiting for transcription job to complete: video-transcription-4ef448e9
+2025-09-26 16:30:40,082 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:31:10,574 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:31:41,118 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:32:11,578 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:32:42,175 - audio_transcriber - INFO - Transcription job completed: video-transcription-4ef448e9
+2025-09-26 16:32:42,214 - audio_transcriber - INFO - Downloading transcript from: https://s3.us-east-1.amazonaws.com/aws-transcribe-us-east-1-prod/947403101409/video-transcription-4ef448e9/fb8bb760-446d-42f8-b07e-df07cc342b42/asrOutput.json?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA4aCXVzLWVhc3QtMSJGMEQCIFTPhQo%2B31KqSivImGPDHjTEJp72L%2BfGE2G0K4xJUMruAiAs0vc%2F%2FeyxiZmWzZ%2BSgJ2kVUXCldFIH3dKFN4uqoj%2FNSq6BQiX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAQaDDI3NjY1NjQzMzE1MyIMtOkHwK%2Fsz%2Bf8JDzvKo4FlDVZstLhW1dw9Q8RD1fHCZX2wTvoruufH3ucQ4YK%2FB5cGzxrGpHuKAmtJCiYg1skXxWBYXMySix%2B70vcW5n%2FR%2FdpH7rUe2fLK1euyokPbyRevqi18lR7wYooWw1uWHy4gKdKhJG7qdJoawZl1Cj3VVWxcxyIcEDaWOkUgn9ite3N1sEKBW3%2BDFg56yU3vsPCrsTjFg2kZwBy3xn4dLgSyGiWszkR6FPR3sJmOFQMK5qbOLRVOdFkuES9a9bpn0yZMESJLMkwPhpm0XywAAyiO0z%2BsIrWdLQt9Vy5LULU8WO%2FJsBJEwPeIEblKyd2G5U5Ywp4mBoAGK3cYzGvtEa7P3srU0bycmtRUOD%2BdTo8HPhaAwe%2BqaixB2ChyTtZu6Ms7yLnr4HdroEWFvHmYx6ZwF79O2%2BcI2VdAHGBBGeEvvDf8uIK4P%2Fct41imVmeKXWYkKV4CRzHwCy%2BhW6O6%2Fma36JXDvaZPPXROl%2Fmltc1yFiHUaTdcAuZkAQdbdaGuZ57XayHN%2B8xcKXKFGH20g9jjPQO6umT8vzIvmmdDRleWan6ons%2BPoBQpZqw622I3mmU1dJsA3iPiu1igYD%2FVUHxAoAHc3bnTT0SkjRUmLGsR18ZHsyexxr92llfyexDR1aR5Qrje58Eez%2B89ARVQBaT7NgCGBlNgo3gQvumprKuL8kKcLuQq9ZOSSWd80gYj7SqCdKf8i%2FWAuaKlsKuhmrGgJUKk6RE2prFVp3evj72gBpnlQB0SIRRJ0c1J9rCeW9dFAmBNp3JEYhSnnWc7dtCT0DPzy%2BGrfm8QFIa1qy7vhQKx9CkdydSq5HXNRYuNVM%2BLIG0poCr8evsQoL%2B6lfAVVdCbhLKamuMC9gkFjTVMO%2BW3MYGOrIBJO%2BM34ft9VVZzDrRLLLZ%2F8NOWi0gqiwn9v2Fz0Y7KYrYqGWG3PyIzlT5QA%2BnkTBAOuY883F%2BYhF5vakG742JqxjzPdH65D32n5wQkI9xxHKGKsy%2BA4Ha2ohGBe3NCwoUtySj2HxH5iA1%2F9NhDFo0MSa6KLEqaZN6RTqz8%2FfARIQWPatuNEy6xM3JoapOgBTFbQ8XkBQmiZmdU%2F2ZEGGe1%2BuU9u43YDBvpKPI1won0OwFvA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250926T223241Z&X-Amz-SignedHeaders=host&X-Amz-Expires=899&X-Amz-Credential=ASIAUA2QCFAASNBGHEA6%2F20250926%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6be6ee944039e561b4eb659ab1c07ea8a494edb0a0f0781e00d6e263d89be753
+2025-09-26 16:32:43,546 - __main__ - INFO - Step 3: Extracting questions from transcript
+2025-09-26 16:32:43,547 - question_extractor - INFO - Starting simplified question extraction using Bedrock AI
+2025-09-26 16:32:43,555 - aws_clients - INFO - Bedrock client initialized successfully
+2025-09-26 16:33:14,992 - question_extractor - INFO - Extracted 14 questions using Bedrock AI
+2025-09-26 16:33:14,993 - question_extractor - INFO - Question extraction completed: 14 interviewer questions found
+2025-09-26 16:33:14,994 - __main__ - INFO - Step 4: Generating final results
+2025-09-26 16:33:15,380 - __main__ - INFO - Results saved to: results/video_results.json
+2025-09-26 16:33:15,380 - __main__ - INFO - Pipeline processing completed successfully in 186.30 seconds
+2025-09-26 16:48:06,724 - __main__ - INFO - Initializing Video Question Pipeline
+2025-09-26 16:48:06,725 - __main__ - INFO - Pipeline initialized successfully
+2025-09-26 16:48:06,725 - __main__ - INFO - Starting single video processing: video.mkv
+2025-09-26 16:48:06,725 - __main__ - INFO - Starting pipeline processing for video: video.mkv
+2025-09-26 16:48:06,725 - __main__ - INFO - Step 1: Processing video and extracting audio
+2025-09-26 16:48:06,725 - video_processor - INFO - Starting video processing for: video.mkv
+2025-09-26 16:48:06,725 - video_processor - INFO - Extracting audio from video.mkv
+2025-09-26 16:48:10,514 - video_processor - INFO - Audio extracted successfully: video_audio.wav
+2025-09-26 16:48:10,515 - video_processor - INFO - Uploading video.mkv to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:48:10,886 - aws_clients - INFO - S3 client initialized successfully
+2025-09-26 16:48:25,883 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/videos/video.mkv
+2025-09-26 16:48:25,884 - video_processor - INFO - Uploading video_audio.wav to S3 bucket jfernando12-ai-interviews
+2025-09-26 16:48:31,610 - video_processor - INFO - File uploaded successfully: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:48:31,628 - video_processor - INFO - Local audio file removed: video_audio.wav
+2025-09-26 16:48:31,628 - video_processor - INFO - Video processing completed successfully
+2025-09-26 16:48:31,628 - __main__ - INFO - Step 2: Transcribing audio to text
+2025-09-26 16:48:31,628 - audio_transcriber - INFO - Starting audio transcription for: s3://jfernando12-ai-interviews/audio/video_audio.wav
+2025-09-26 16:48:31,629 - audio_transcriber - INFO - Starting transcription job: video-transcription-3ab7a4bc
+2025-09-26 16:48:31,639 - aws_clients - INFO - Transcribe client initialized successfully
+2025-09-26 16:48:32,277 - audio_transcriber - INFO - Transcription job started successfully: video-transcription-3ab7a4bc
+2025-09-26 16:48:32,277 - audio_transcriber - INFO - Waiting for transcription job to complete: video-transcription-3ab7a4bc
+2025-09-26 16:48:32,454 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:49:02,960 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-26 16:49:33,513 - audio_transcriber - INFO - Transcription job completed: video-transcription-3ab7a4bc
+2025-09-26 16:49:33,567 - audio_transcriber - INFO - Downloading transcript from: https://s3.us-east-1.amazonaws.com/aws-transcribe-us-east-1-prod/947403101409/video-transcription-3ab7a4bc/ef8d4879-0fd4-4bae-8c8f-2b4764483fba/asrOutput.json?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA8aCXVzLWVhc3QtMSJGMEQCICDfM%2B%2Fnqw%2FaKK%2BYKCf1N0zcCfWinzEEkjX7yZ5jRzKUAiByemjyGvQpMDz8GWZvCaanNcJdns3uC2ur%2FC0nkb4dCSq7BQiY%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAQaDDI3NjY1NjQzMzE1MyIMOnPuRURVVsoy13jCKo8Fb91Sq3UXh%2BOuNPLkfWp8sWnuXjz2hfhCoeyn0tznqZt3EQlkImlNVd1jNEc7f22nT5AfMMistTvNjJKLs%2FV5Yv6Loq1IQf1n8PmIhAQR5R0qNW7DN1Vymjs9PXgUfksCGxeV%2F8TCXJFL3PxyI9khO0QxGhxB%2BWb6nJkt%2B%2B9CCdCmnWqpjOjaZw%2Fw0Y0IUDfZtGREGqVGwGvCN%2FVgvgs1mnp8f9D9jnqGTOj5gpRkrgelgOIdkJrVSPjdj5Igl3ieY4evsUjGku7tyk4NnQyYhjJe%2BnZlh7ynEnFClfvYJjjw4hgNFBSYkvVLTK4%2FnbGz9YRLqiZc9TlnuOmGqsvnN7LDg%2FwD7dADl9xGB9DTQ2JR%2FmbtOY4f%2FvL69aqQsy%2BbTYeC632HuIF8qVkEc8kd2mXOZSc0zxo8qNJ9Fg86%2Bf5LRIe6Oe1V2HoAzy81kdGHX2u%2FvX2bgE1uS2GD59di%2Flhq6jFLeFgYckVBdc3dpMIEvfgnShRneKhBkM3ODXqjffrh5vwEJcYIZVZB3SXHVQTKsWvq%2FWXuonf9En7u%2BbdROl3DYgMDAC4p5SjxD8o3c4O61p1a34h%2FGLQvfW544ubtbbeIHgI1n%2FFKAwiq6SQ64j1vQ%2Bjm%2FMT9hS7%2F8kyQL0tyKM7UUBA1evBgz5poTsDWiBIoI7dsDaITwjYd0dkSoAfnI%2FUixk5lKYqnQ4ry9L77WrBDPk9n6xOu%2BSl1PdKkxjz%2F4nSVBORfktfO4DGrjF7Nwpe0V7jZ%2Bl4ZY63cFolV%2BxlgiJwvYDYdszdpaVB%2BLuD9DpQJh5XSOc6nTRh6YIhdIBL4GnHn9xnR9oDUshmBqTgHX73v0TQ%2FFc4VKN9WmgYzhjUR2ncsBpJJnzDdpdzGBjqyAeXhRxkheUQucfilUxQIgtopR92kbj9yzB5j7471Tcf03nT8BzYqIu8ujflScJmTwVPysA3d1nEZDWGZWLWeeZyT7XaATSBmPRSSIXTN%2B5E06PaSwfERGcc7pfZIV0zvWieXk4irUs%2FvKBb3WR%2BZQvxFaiPo6DjwU1Hso9O33W5Fh7eudPgWBLTJO%2BbfyPFbQCN6xcHdhgQfSDG4k31dX%2BcIaE%2BDEv8EvgtVh%2FgaIr6xNT8%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250926T224932Z&X-Amz-SignedHeaders=host&X-Amz-Expires=900&X-Amz-Credential=ASIAUA2QCFAAQZEXLEAH%2F20250926%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=fe7429273d8629b3370c5da41c03a985b0a0d0fb7ddec7fe7c7fc14f3eee1e44
+2025-09-26 16:49:34,778 - __main__ - INFO - Step 3: Extracting questions from transcript
+2025-09-26 16:49:34,778 - question_extractor - INFO - Starting simplified question extraction using Bedrock AI
+2025-09-26 16:49:34,786 - aws_clients - INFO - Bedrock client initialized successfully
+2025-09-26 16:50:05,642 - question_extractor - INFO - Extracted 14 questions using Bedrock AI
+2025-09-26 16:50:05,642 - question_extractor - INFO - Question extraction completed: 14 interviewer questions found
+2025-09-26 16:50:05,642 - __main__ - INFO - Step 4: Generating final results
+2025-09-26 16:50:06,145 - __main__ - INFO - Results saved to: results/video_results.json
+2025-09-26 16:50:06,146 - __main__ - INFO - Pipeline processing completed successfully in 118.92 seconds
