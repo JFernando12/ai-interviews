@@ -19,12 +19,12 @@ from video_processor import VideoProcessor
 from audio_transcriber import AudioTranscriber
 from question_extractor import QuestionExtractor
 
-# Configure logging with better formatting
+# Configure logging with better formatting and UTF-8 encoding
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('interview_processing.log'),
+        logging.FileHandler('interview_processing.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )

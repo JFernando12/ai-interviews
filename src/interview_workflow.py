@@ -72,7 +72,7 @@ class InterviewProcessingWorkflow:
             validate_uuid(interview_id, "Interview ID")
             
             # Step 1: Already done - SQS message received with interview_id
-            logger.info(f"Step 1: ✓ SQS message received for interview: {interview_id}")
+            logger.info(f"Step 1: [OK] SQS message received for interview: {interview_id}")
             
             # Step 2: Get the interview from DynamoDB
             logger.info("Step 2: Getting interview from DynamoDB")
@@ -87,14 +87,14 @@ class InterviewProcessingWorkflow:
             video_path = interview['video_path']
             user_id = interview['user_id']
             
-            logger.info(f"✓ Retrieved interview: video_path={video_path}, user_id={user_id}")
+            logger.info(f"[OK] Retrieved interview: video_path={video_path}, user_id={user_id}")
             
             # Step 3: Update interview state to 'processing'
             logger.info("Step 3: Updating interview state to 'processing'")
             if not self.dynamodb_handler.update_interview_state(interview_id, 'processing'):
                 raise AWSServiceError(f"Failed to update interview state to 'processing': {interview_id}")
             
-            logger.info(f"✓ Interview state updated to 'processing'")
+            logger.info(f"[OK] Interview state updated to 'processing'")
             
             # Step 4: Process the video to extract questions with AI
             logger.info("Step 4: Processing video and extracting questions")
@@ -108,7 +108,7 @@ class InterviewProcessingWorkflow:
             if questions is None:
                 raise VideoProcessingError(f"Failed to process video and extract questions: {video_path}")
             
-            logger.info(f"✓ Extracted {len(questions)} questions from video")
+            logger.info(f"[OK] Extracted {len(questions)} questions from video")
             
             # Step 5: Save questions to DynamoDB
             logger.info("Step 5: Saving questions to DynamoDB")
@@ -116,20 +116,20 @@ class InterviewProcessingWorkflow:
             if not self.dynamodb_handler.save_questions_batch(interview_id, user_id, questions):
                 raise AWSServiceError(f"Failed to save questions to DynamoDB: {interview_id}")
             
-            logger.info(f"✓ Saved {len(questions)} questions to DynamoDB")
+            logger.info(f"[OK] Saved {len(questions)} questions to DynamoDB")
             
             # Step 6: Update interview state to 'completed'
             logger.info("Step 6: Updating interview state to 'completed'")
             if not self.dynamodb_handler.update_interview_state(interview_id, 'completed'):
                 raise AWSServiceError(f"Failed to update interview state to 'completed': {interview_id}")
             
-            logger.info(f"✓ Interview state updated to 'completed'")
+            logger.info(f"[OK] Interview state updated to 'completed'")
             
             # Log final success metrics
             end_time = datetime.now()
             log_processing_metrics(start_time, end_time, interview_id, len(questions), True)
             
-            logger.info(f"🎉 Successfully completed interview processing for {interview_id}")
+            logger.info(f"[SUCCESS] Successfully completed interview processing for {interview_id}")
             
             return True
             

@@ -5,3 +5,51 @@
 2025-09-28 12:57:43,663 - sqs_handler - INFO - Starting SQS message processor loop
 2025-09-28 12:57:43,663 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
 2025-09-28 12:57:43,929 - aws_clients - INFO - SQS client initialized successfully
+2025-09-28 12:57:44,794 - sqs_handler - INFO - Received 1 message(s) from SQS
+2025-09-28 12:57:44,794 - sqs_handler - INFO - Parsed message: interview_id=a9ad6877-9767-4642-9171-034d101bd676
+2025-09-28 12:57:44,916 - sqs_handler - INFO - Message visibility timeout changed to 600 seconds
+2025-09-28 12:57:44,917 - interview_workflow - INFO - Starting interview processing for ID: a9ad6877-9767-4642-9171-034d101bd676
+2025-09-28 12:57:44,944 - interview_workflow - INFO - Step 2: Getting interview from DynamoDB
+2025-09-28 12:57:44,944 - dynamodb_handler - INFO - Getting interview with ID: a9ad6877-9767-4642-9171-034d101bd676
+2025-09-28 12:57:44,976 - aws_clients - INFO - DynamoDB client initialized successfully
+2025-09-28 12:57:45,670 - dynamodb_handler - INFO - Retrieved interview: a9ad6877-9767-4642-9171-034d101bd676
+2025-09-28 12:57:45,676 - interview_workflow - INFO - Step 3: Updating interview state to 'processing'
+2025-09-28 12:57:45,677 - dynamodb_handler - INFO - Updating interview a9ad6877-9767-4642-9171-034d101bd676 state to: processing
+2025-09-28 12:57:45,803 - dynamodb_handler - INFO - Successfully updated interview a9ad6877-9767-4642-9171-034d101bd676 state to processing
+2025-09-28 12:57:45,809 - interview_workflow - INFO - Step 4: Processing video and extracting questions
+2025-09-28 12:57:45,929 - sqs_handler - INFO - Message visibility timeout changed to 1800 seconds
+2025-09-28 12:57:45,930 - interview_workflow - INFO - Processing video file: videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,931 - interview_workflow - INFO - Constructed S3 URI: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,931 - interview_workflow - INFO - Processing video and extracting audio
+2025-09-28 12:57:45,932 - video_processor - INFO - Starting video processing for: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,933 - video_processor - ERROR - Video file not found: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,933 - video_processor - ERROR - Failed to extract audio from video: Invalid video file: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,934 - video_processor - ERROR - Video processing failed: Invalid video file: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,934 - interview_workflow - ERROR - Video processing failed: Invalid video file: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,935 - interview_workflow - ERROR - Interview processing failed for a9ad6877-9767-4642-9171-034d101bd676: Failed to process video and extract questions: videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+2025-09-28 12:57:45,936 - error_handling - INFO - PROCESSING_METRICS | Interview: a9ad6877-9767-4642-9171-034d101bd676 | Status: FAILED | Duration: 1.02s | Questions: 0
+2025-09-28 12:57:45,936 - dynamodb_handler - INFO - Updating interview a9ad6877-9767-4642-9171-034d101bd676 state to: failed
+2025-09-28 12:57:46,061 - dynamodb_handler - INFO - Successfully updated interview a9ad6877-9767-4642-9171-034d101bd676 state to failed
+2025-09-28 12:57:46,062 - sqs_handler - ERROR - Processing failed for interview_id: a9ad6877-9767-4642-9171-034d101bd676
+2025-09-28 12:57:46,063 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 12:58:06,184 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 12:58:06,185 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 12:58:26,309 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 12:58:26,309 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 12:58:46,430 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 12:58:46,430 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 12:59:06,550 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 12:59:06,551 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 12:59:26,672 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 12:59:26,673 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 12:59:46,794 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 12:59:46,795 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:00:06,919 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 13:00:06,920 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:00:27,041 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 13:00:27,042 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:00:47,163 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 13:00:47,164 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:01:07,282 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 13:01:07,283 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:01:27,399 - sqs_handler - INFO - Received interrupt signal, stopping message processor
