@@ -19,6 +19,13 @@ class AWSConfig:
     # S3 Configuration
     S3_BUCKET = os.getenv('AWS_S3_BUCKET')
     
+    # SQS Configuration
+    SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL', 'https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos')
+    
+    # DynamoDB Configuration
+    INTERVIEWS_TABLE_NAME = os.getenv('AWS_DYNAMODB_INTERVIEWS_TABLE', 'app-interviews-interviews')
+    QUESTIONS_TABLE_NAME = os.getenv('AWS_DYNAMODB_QUESTIONS_TABLE', 'app-interviews-questions')
+    
     # AWS Service Configuration
     TRANSCRIBE_JOB_PREFIX = 'video-transcription-'
     COMPREHEND_LANGUAGE_CODE = 'en'

@@ -1,6 +1,6 @@
 """
-AI Interviews Backend - Video Processing Pipeline
-Main module that orchestrates the complete video-to-questions pipeline using AWS services
+AI Interviews Backend - SQS-Triggered Interview Processing Pipeline
+Main module that orchestrates the complete SQS-triggered video-to-questions pipeline using AWS services
 """
 import os
 import logging
@@ -12,19 +12,27 @@ from typing import Dict, Any, Optional
 # Import our custom modules
 from config import AWSConfig
 from aws_clients import AWSServiceClients
+from interview_workflow import InterviewProcessingWorkflow
+
+# Legacy imports for backwards compatibility
 from video_processor import VideoProcessor
 from audio_transcriber import AudioTranscriber
 from question_extractor import QuestionExtractor
 
-# Configure logging
+# Configure logging with better formatting
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('video_processing.log'),
+        logging.FileHandler('interview_processing.log'),
         logging.StreamHandler()
     ]
 )
+
+# Set boto3 logging to WARNING to reduce noise
+logging.getLogger('boto3').setLevel(logging.WARNING)
+logging.getLogger('botocore').setLevel(logging.WARNING)
+logging.getLogger('urllib3').setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
@@ -223,45 +231,71 @@ def main():
     """Main function for CLI usage"""
     import argparse
     
-    parser = argparse.ArgumentParser(description='AI Interviews Video Processing Pipeline')
-    parser.add_argument('video_path', nargs='?', help='Path to video file or directory')
-    parser.add_argument('--output-dir', help='Output directory for results')
+    parser = argparse.ArgumentParser(description='AI Interviews Processing Pipeline')
+    parser.add_argument('--mode', choices=['sqs', 'single-video', 'single-interview'], default='sqs',
+                       help='Processing mode: sqs (continuous SQS processing), single-video (legacy mode), single-interview (process by interview ID)')
+    parser.add_argument('--interview-id', help='Interview ID for single-interview mode')
+    parser.add_argument('video_path', nargs='?', help='Path to video file (for single-video mode)')
+    parser.add_argument('--output-dir', help='Output directory for results (single-video mode only)')
     parser.add_argument('--language', default='en-US', help='Language code for transcription')
     
     args = parser.parse_args()
     
     try:
-        # Initialize pipeline
-        pipeline = VideoQuestionPipeline()
-        
-        # Check if video_path is provided for processing
-        if not args.video_path:
-            print("Error: video_path is required unless using --test-connections")
-            parser.print_help()
-            return 1
-        
-        # Process videos
-        logger.info(f"Starting single video processing: {args.video_path}")
-        results = pipeline.process_video_file(
-            args.video_path,
-            output_dir=args.output_dir,
-            language_code=args.language
-        )
-        
-        # Print summary
-        print("\n=== Processing Summary ===")
-        if results['status'] == 'success':
-            summary = results['summary']
-            print(f"✓ Processing completed successfully")
-            print(f"  Video duration: {summary['video_duration_seconds']:.1f} seconds")
-            print(f"  Questions found: {summary['total_questions_found']}")
-            print(f"  Processing time: {results['processing_duration_seconds']:.1f} seconds")
-        else:
-            print(f"✗ Processing failed: {results['error_message']}")
-        
-        if args.output_dir:
-            print(f"Results saved to: {args.output_dir}")
+        if args.mode == 'sqs':
+            # New SQS-triggered continuous processing mode
+            logger.info("Starting SQS-triggered continuous processing mode")
+            workflow = InterviewProcessingWorkflow()
+            workflow.run_continuous_processing()
+            
+        elif args.mode == 'single-interview':
+            # Process a single interview by ID
+            if not args.interview_id:
+                print("Error: --interview-id is required for single-interview mode")
+                return 1
+                
+            logger.info(f"Starting single interview processing: {args.interview_id}")
+            workflow = InterviewProcessingWorkflow()
+            success = workflow.process_single_interview(args.interview_id)
+            
+            if success:
+                print(f"✓ Successfully processed interview: {args.interview_id}")
+            else:
+                print(f"✗ Failed to process interview: {args.interview_id}")
+                return 1
+                
+        elif args.mode == 'single-video':
+            # Legacy single video processing mode
+            if not args.video_path:
+                print("Error: video_path is required for single-video mode")
+                return 1
+                
+            logger.info(f"Starting legacy single video processing: {args.video_path}")
+            pipeline = VideoQuestionPipeline()
+            results = pipeline.process_video_file(
+                args.video_path,
+                output_dir=args.output_dir,
+                language_code=args.language
+            )
+            
+            # Print summary
+            print("\n=== Processing Summary ===")
+            if results['status'] == 'success':
+                summary = results['summary']
+                print(f"✓ Processing completed successfully")
+                print(f"  Video duration: {summary['video_duration_seconds']:.1f} seconds")
+                print(f"  Questions found: {summary['total_questions_found']}")
+                print(f"  Processing time: {results['processing_duration_seconds']:.1f} seconds")
+            else:
+                print(f"✗ Processing failed: {results['error_message']}")
+                return 1
+            
+            if args.output_dir:
+                print(f"Results saved to: {args.output_dir}")
     
+    except KeyboardInterrupt:
+        logger.info("Received interrupt signal, shutting down gracefully")
+        print("\nShutdown requested, stopping processing...")
     except Exception as e:
         logger.error(f"Application failed: {str(e)}")
         print(f"Error: {str(e)}")

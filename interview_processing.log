@@ -1,0 +1,7 @@
+2025-09-28 12:57:43,661 - __main__ - INFO - Starting SQS-triggered continuous processing mode
+2025-09-28 12:57:43,662 - interview_workflow - INFO - Initializing Interview Processing Workflow
+2025-09-28 12:57:43,662 - interview_workflow - INFO - Workflow initialized successfully
+2025-09-28 12:57:43,662 - interview_workflow - INFO - Starting continuous interview processing
+2025-09-28 12:57:43,663 - sqs_handler - INFO - Starting SQS message processor loop
+2025-09-28 12:57:43,663 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 12:57:43,929 - aws_clients - INFO - SQS client initialized successfully

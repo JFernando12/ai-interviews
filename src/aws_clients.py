@@ -21,6 +21,8 @@ class AWSServiceClients:
         self._transcribe_client = None
         self._comprehend_client = None
         self._bedrock_client = None
+        self._sqs_client = None
+        self._dynamodb_client = None
         
     @property
     def s3_client(self):
@@ -76,3 +78,39 @@ class AWSServiceClients:
                 # Bedrock is optional, so we don't raise here
                 logger.warning("Bedrock client unavailable - advanced AI features will be disabled")
         return self._bedrock_client
+    
+    @property
+    def sqs_client(self):
+        """Lazy-loaded SQS client"""
+        if self._sqs_client is None:
+            try:
+                self._sqs_client = boto3.client(
+                    'sqs',
+                    aws_access_key_id=self.config.ACCESS_KEY_ID,
+                    aws_secret_access_key=self.config.SECRET_ACCESS_KEY,
+                    aws_session_token=self.config.SESSION_TOKEN,
+                    region_name=self.config.REGION
+                )
+                logger.info("SQS client initialized successfully")
+            except Exception as e:
+                logger.error(f"Failed to initialize SQS client: {str(e)}")
+                raise
+        return self._sqs_client
+    
+    @property
+    def dynamodb_client(self):
+        """Lazy-loaded DynamoDB client"""
+        if self._dynamodb_client is None:
+            try:
+                self._dynamodb_client = boto3.client(
+                    'dynamodb',
+                    aws_access_key_id=self.config.ACCESS_KEY_ID,
+                    aws_secret_access_key=self.config.SECRET_ACCESS_KEY,
+                    aws_session_token=self.config.SESSION_TOKEN,
+                    region_name=self.config.REGION
+                )
+                logger.info("DynamoDB client initialized successfully")
+            except Exception as e:
+                logger.error(f"Failed to initialize DynamoDB client: {str(e)}")
+                raise
+        return self._dynamodb_client

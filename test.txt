@@ -1,0 +1,19 @@
+Step 1: input: Message of SQS with url: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+message: {"interview_id": "uuid"}
+
+Step 2: Get the interview from DynamoDB with interview_id
+Table: app-interviews-interviews
+columns: filter by: id, get: video_path, user_id, example of video_path: videos/cae9be14-eeab-4670-acc4-54621a206bc0/a9ad6877-9767-4642-9171-034d101bd676/1759082231352_Interview - Gloria Dala.mkv
+
+Step 3: Update the column "state" to 'processing' in the interview
+Table: app-interviews-interviews
+
+Step 4: process the video to extract the questions with AI
+Result: [{"context":"context 1","question": "question 1", answer: "answer 1"}, ...]
+
+Step 5: Save the questions to DynamoDB, one by one, or in batch if possible
+Table: app-interviews-questions
+Columns: id (uuid), interview_id, user_id, context, question, answer, global=false, created_at, updated_at
+
+Step 6: Update the column "state" to 'completed' in the interview
+Table: app-interviews-interviews
