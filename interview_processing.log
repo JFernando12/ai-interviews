@@ -53,3 +53,79 @@
 2025-09-28 13:01:07,282 - sqs_handler - INFO - Received 0 message(s) from SQS
 2025-09-28 13:01:07,283 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
 2025-09-28 13:01:27,399 - sqs_handler - INFO - Received interrupt signal, stopping message processor
+2025-09-28 13:19:41,219 - __main__ - INFO - Starting SQS-triggered continuous processing mode
+2025-09-28 13:19:41,220 - interview_workflow - INFO - Initializing Interview Processing Workflow
+2025-09-28 13:19:41,220 - interview_workflow - INFO - Workflow initialized successfully
+2025-09-28 13:19:41,220 - interview_workflow - INFO - Starting continuous interview processing
+2025-09-28 13:19:41,220 - sqs_handler - INFO - Starting SQS message processor loop
+2025-09-28 13:19:41,220 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:19:41,390 - aws_clients - INFO - SQS client initialized successfully
+2025-09-28 13:19:42,308 - sqs_handler - INFO - Received 1 message(s) from SQS
+2025-09-28 13:19:42,308 - sqs_handler - INFO - Parsed message: interview_id=3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:19:42,429 - sqs_handler - INFO - Message visibility timeout changed to 600 seconds
+2025-09-28 13:19:42,430 - interview_workflow - INFO - Starting interview processing for ID: 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:19:42,430 - interview_workflow - INFO - Step 1: [OK] SQS message received for interview: 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:19:42,430 - interview_workflow - INFO - Step 2: Getting interview from DynamoDB
+2025-09-28 13:19:42,431 - dynamodb_handler - INFO - Getting interview with ID: 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:19:42,445 - aws_clients - INFO - DynamoDB client initialized successfully
+2025-09-28 13:19:43,193 - dynamodb_handler - INFO - Retrieved interview: 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:19:43,193 - interview_workflow - INFO - [OK] Retrieved interview: video_path=videos/cae9be14-eeab-4670-acc4-54621a206bc0/3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e/1759087106244_Interview - Gloria Dala.mkv, user_id=cae9be14-eeab-4670-acc4-54621a206bc0
+2025-09-28 13:19:43,194 - interview_workflow - INFO - Step 3: Updating interview state to 'processing'
+2025-09-28 13:19:43,194 - dynamodb_handler - INFO - Updating interview 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e state to: processing
+2025-09-28 13:19:43,336 - dynamodb_handler - INFO - Successfully updated interview 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e state to processing
+2025-09-28 13:19:43,337 - interview_workflow - INFO - [OK] Interview state updated to 'processing'
+2025-09-28 13:19:43,337 - interview_workflow - INFO - Step 4: Processing video and extracting questions
+2025-09-28 13:19:43,460 - sqs_handler - INFO - Message visibility timeout changed to 1800 seconds
+2025-09-28 13:19:43,460 - interview_workflow - INFO - Processing video file: videos/cae9be14-eeab-4670-acc4-54621a206bc0/3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e/1759087106244_Interview - Gloria Dala.mkv
+2025-09-28 13:19:43,461 - interview_workflow - INFO - Constructed S3 URI: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e/1759087106244_Interview - Gloria Dala.mkv
+2025-09-28 13:19:43,462 - interview_workflow - INFO - Processing video and extracting audio
+2025-09-28 13:19:43,462 - video_processor - INFO - Starting video processing for: s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e/1759087106244_Interview - Gloria Dala.mkv
+2025-09-28 13:19:43,463 - video_processor - INFO - Downloading video from S3...
+2025-09-28 13:19:43,465 - video_processor - INFO - Downloading s3://app-interviews/videos/cae9be14-eeab-4670-acc4-54621a206bc0/3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e/1759087106244_Interview - Gloria Dala.mkv to C:\Users\ferna\AppData\Local\Temp\tmpwqx8zqi4\1759087106244_Interview - Gloria Dala.mkv
+2025-09-28 13:19:43,466 - video_processor - INFO - Checking if S3 object exists...
+2025-09-28 13:19:43,638 - aws_clients - INFO - S3 client initialized successfully
+2025-09-28 13:19:44,446 - video_processor - INFO - S3 object exists, proceeding with download
+2025-09-28 13:20:01,916 - video_processor - INFO - Successfully downloaded file to: C:\Users\ferna\AppData\Local\Temp\tmpwqx8zqi4\1759087106244_Interview - Gloria Dala.mkv
+2025-09-28 13:20:01,917 - video_processor - INFO - Extracting audio from C:\Users\ferna\AppData\Local\Temp\tmpwqx8zqi4\1759087106244_Interview - Gloria Dala.mkv
+2025-09-28 13:20:04,796 - video_processor - INFO - Audio extracted successfully: 1759087106244_Interview - Gloria Dala_audio.wav
+2025-09-28 13:20:04,796 - video_processor - INFO - Uploading 1759087106244_Interview - Gloria Dala_audio.wav to S3 bucket app-interviews
+2025-09-28 13:20:09,804 - video_processor - INFO - File uploaded successfully: s3://app-interviews/audio/1759087106244_Interview - Gloria Dala_audio.wav
+2025-09-28 13:20:09,837 - video_processor - INFO - Local audio file removed: 1759087106244_Interview - Gloria Dala_audio.wav
+2025-09-28 13:20:09,837 - video_processor - INFO - Video processing completed successfully
+2025-09-28 13:20:09,837 - interview_workflow - INFO - Transcribing audio to text
+2025-09-28 13:20:09,837 - audio_transcriber - INFO - Starting audio transcription for: s3://app-interviews/audio/1759087106244_Interview - Gloria Dala_audio.wav
+2025-09-28 13:20:09,838 - audio_transcriber - INFO - Starting transcription job: video-transcription-04b8ef60
+2025-09-28 13:20:09,871 - aws_clients - INFO - Transcribe client initialized successfully
+2025-09-28 13:20:10,807 - audio_transcriber - INFO - Transcription job started successfully: video-transcription-04b8ef60
+2025-09-28 13:20:10,807 - audio_transcriber - INFO - Waiting for transcription job to complete: video-transcription-04b8ef60
+2025-09-28 13:20:10,976 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-28 13:20:41,679 - audio_transcriber - INFO - Transcription job status: IN_PROGRESS. Waiting...
+2025-09-28 13:21:12,461 - audio_transcriber - INFO - Transcription job completed: video-transcription-04b8ef60
+2025-09-28 13:21:12,577 - audio_transcriber - INFO - Downloading transcript from: https://s3.us-east-1.amazonaws.com/aws-transcribe-us-east-1-prod/947403101409/video-transcription-04b8ef60/bbb73f48-d927-4577-b6b5-cba4e2251ab4/asrOutput.json?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDsaCXVzLWVhc3QtMSJHMEUCIQCcjYoKQ8BREz89I3DizlH28Qs4sGwj%2FAmKZYRFLY2STAIgUeSjRrZB7EASavWFvHqxgdCa7Py5h4b7pYsoBSclWhkqugUIxP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAEGgwyNzY2NTY0MzMxNTMiDJXaCmMy3NW8mzg2bCqOBYR%2BdwMQydtYgDlYQCqUENql%2BdrKpEja8kDWN0XLB%2BcRc5cgPF5bGhw%2F%2FpKInhYEJ%2BJM73ft07OxmI8hBz3KcNz0nETB6uQQK1dq4t09%2Fa4zMW8hdg2ChqsTVtGiNYz4i%2FXliEPjnBdpa5irflTp2269sZuJfoD3NQdFzI7tlUTK33wmdK%2BFsK2GUsYyVuwXGit5MbQpV%2FraEIUqeqexBcVXMKYX0sQ5oq7be7ILZlEwF7jFp0IrkM1o5pTdJJA8Kod8vYDRMUcQ2g8S%2BRuo1%2Bkls2v2r%2Fn7Gin1XLk8PFPDf7S%2B3wpgACnBBDhA%2BqM1hPKrK1INGQ5arr5T71Xl2nlOGwFGdbQV%2FCZkxkElIZ5MLysnshIX1DWTHrP2HFt3GSs19bfwxQVJH8o0ZKuAbAh1qFkMDKot%2BlHCcKdxTM7jcWrCXscbAKM02Lw2jvePfsTM3%2FeA3FwhQeRUfEAKqE%2BxozGj9ostkGnt7Bhg6ETloFzWhOfusVNKNviIXf63u8loSptvyaU16UjP6%2BhBGEBwTl3l5RSZ6eim49l2jNF1wQPCd68%2BOT5vMRpR40rN7GP%2BtOHTtlXksHgS1fAqYu96mVb4UtosD1AvWpTm8wjgrwRFyAYy7ZVvghEL%2FtIM9zbB28494F16ZHBkKtzkednSddF73qWCzqzZ3p%2B0Zhm9CZoXqLcF2KMpG34xzS%2Fsa%2Fs9mZkXI1%2BuMdg5KlhVNBnmbqxJro0RnUkN%2B%2Fwebo5yZpBSpsg%2BmJJp8vJ5WaPKCJlGVSVWegf8hRALdYS2S4jGhgKjO3gMRnBR7EXndQc1YyXSbpUFfLqyvY%2F7rnH01yhGa%2Fo3y0P5APFsjmX9Xe4DWp4bNeKqZMQkWFW2IjDviubGBjqxAbPxfUEAwynzcZ5kDOoLti6%2Fo81N8%2FYQ1HmKxxfDVLexao%2BkpYp3PK4un%2FfTGATLVpONRE7sfE0tvFozfGGd3IdJubfQ0z%2BXvkhANkQMC1Laafdy%2BiLE7iFvgP2%2BfGJyD0WfLhdZ9aDkQPrLcHZugGd8A3omO4dfLQeBjr%2F5tB3IHUWUTpBLj2RmfypJ2HTykTbpcE7nsPAdnUgi4%2B4NTa5uLP6Nx0YCSVKgx%2FPRMxnQcg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250928T192114Z&X-Amz-SignedHeaders=host&X-Amz-Expires=899&X-Amz-Credential=ASIAUA2QCFAA7HUWZ5QH%2F20250928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=28720c9572ff26fcc723a34034722781caeb5ae738e0a9ddab02ac9fdfbafdaa
+2025-09-28 13:21:13,916 - interview_workflow - INFO - Extracting questions from transcript
+2025-09-28 13:21:13,917 - question_extractor - INFO - Starting simplified question extraction using Bedrock AI
+2025-09-28 13:21:13,945 - aws_clients - INFO - Bedrock client initialized successfully
+2025-09-28 13:21:47,484 - question_extractor - INFO - Extracted 13 questions using Bedrock AI
+2025-09-28 13:21:47,485 - question_extractor - INFO - Question extraction completed: 13 interviewer questions found
+2025-09-28 13:21:47,488 - interview_workflow - INFO - [OK] Extracted 13 questions from video
+2025-09-28 13:21:47,488 - interview_workflow - INFO - Step 5: Saving questions to DynamoDB
+2025-09-28 13:21:47,489 - dynamodb_handler - INFO - Saving 13 questions for interview 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:21:48,202 - dynamodb_handler - INFO - Saved batch of 13 questions (13/13 total)
+2025-09-28 13:21:48,203 - dynamodb_handler - INFO - Successfully saved 13 questions for interview 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:21:48,203 - interview_workflow - INFO - [OK] Saved 13 questions to DynamoDB
+2025-09-28 13:21:48,203 - interview_workflow - INFO - Step 6: Updating interview state to 'completed'
+2025-09-28 13:21:48,203 - dynamodb_handler - INFO - Updating interview 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e state to: completed
+2025-09-28 13:21:48,331 - dynamodb_handler - INFO - Successfully updated interview 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e state to completed
+2025-09-28 13:21:48,331 - interview_workflow - INFO - [OK] Interview state updated to 'completed'
+2025-09-28 13:21:48,331 - error_handling - INFO - PROCESSING_METRICS | Interview: 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e | Status: SUCCESS | Duration: 125.90s | Questions: 13
+2025-09-28 13:21:48,332 - interview_workflow - INFO - [SUCCESS] Successfully completed interview processing for 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:21:49,183 - sqs_handler - INFO - Message deleted successfully from SQS queue
+2025-09-28 13:21:49,184 - sqs_handler - INFO - Successfully processed interview_id: 3ceb8a5e-cbec-4e67-9c8f-e508b6baa24e
+2025-09-28 13:21:49,184 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:22:09,305 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 13:22:09,306 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:22:29,426 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 13:22:29,426 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:22:49,545 - sqs_handler - INFO - Received 0 message(s) from SQS
+2025-09-28 13:22:49,546 - sqs_handler - INFO - Polling SQS queue: https://sqs.us-east-1.amazonaws.com/947403101409/app-interviews-sqs-videos
+2025-09-28 13:23:09,662 - sqs_handler - INFO - Received interrupt signal, stopping message processor
