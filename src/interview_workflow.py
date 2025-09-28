@@ -86,8 +86,10 @@ class InterviewProcessingWorkflow:
             
             video_path = interview['video_path']
             user_id = interview['user_id']
+            interview_type = interview.get('type')  # Optional field
+            programming_language = interview.get('programming_language')  # Optional field
             
-            logger.info(f"[OK] Retrieved interview: video_path={video_path}, user_id={user_id}")
+            logger.info(f"[OK] Retrieved interview: video_path={video_path}, user_id={user_id}, type={interview_type}, programming_language={programming_language}")
             
             # Step 3: Update interview state to 'processing'
             logger.info("Step 3: Updating interview state to 'processing'")
@@ -113,7 +115,9 @@ class InterviewProcessingWorkflow:
             # Step 5: Save questions to DynamoDB
             logger.info("Step 5: Saving questions to DynamoDB")
             
-            if not self.dynamodb_handler.save_questions_batch(interview_id, user_id, questions):
+            if not self.dynamodb_handler.save_questions_batch(
+                interview_id, user_id, questions, interview_type, programming_language
+            ):
                 raise AWSServiceError(f"Failed to save questions to DynamoDB: {interview_id}")
             
             logger.info(f"[OK] Saved {len(questions)} questions to DynamoDB")

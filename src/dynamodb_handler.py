@@ -2,7 +2,6 @@
 DynamoDB Handler Module
 Handles database operations for interviews and questions tables
 """
-import json
 import logging
 import uuid
 from datetime import datetime
@@ -100,7 +99,8 @@ class DynamoDBHandler:
             logger.error(f"Unexpected error updating interview {interview_id} state: {str(e)}")
             return False
     
-    def save_questions_batch(self, interview_id: str, user_id: str, questions: List[Dict[str, str]]) -> bool:
+    def save_questions_batch(self, interview_id: str, user_id: str, questions: List[Dict[str, str]], 
+                           type: Optional[str] = None, programming_language: Optional[str] = None) -> bool:
         """
         Save multiple questions to DynamoDB in batch
         
@@ -108,6 +108,8 @@ class DynamoDBHandler:
             interview_id: UUID string of the interview
             user_id: UUID string of the user
             questions: List of question dictionaries with 'context', 'question', 'answer'
+            type: Interview type (from interview table)
+            programming_language: Programming language (from interview table)
             
         Returns:
             True if all questions saved successfully, False otherwise
@@ -141,6 +143,13 @@ class DynamoDBHandler:
                     'created_at': {'S': current_time},
                     'updated_at': {'S': current_time}
                 }
+                
+                # Add interview-related fields
+                if type:
+                    item['type'] = {'S': type}
+                    
+                if programming_language:
+                    item['programming_language'] = {'S': programming_language}
                 
                 # Add optional fields
                 if 'context' in question_data and question_data['context']:
@@ -190,7 +199,8 @@ class DynamoDBHandler:
             logger.error(f"Unexpected error saving questions batch for interview {interview_id}: {str(e)}")
             return False
     
-    def save_single_question(self, interview_id: str, user_id: str, question_data: Dict[str, str]) -> Optional[str]:
+    def save_single_question(self, interview_id: str, user_id: str, question_data: Dict[str, str],
+                           type: Optional[str] = None, programming_language: Optional[str] = None) -> Optional[str]:
         """
         Save a single question to DynamoDB
         
@@ -198,6 +208,8 @@ class DynamoDBHandler:
             interview_id: UUID string of the interview
             user_id: UUID string of the user
             question_data: Dictionary with 'context', 'question', 'answer'
+            type: Interview type (from interview table)
+            programming_language: Programming language (from interview table)
             
         Returns:
             Question ID if successful, None otherwise
@@ -220,6 +232,13 @@ class DynamoDBHandler:
                 'created_at': {'S': current_time},
                 'updated_at': {'S': current_time}
             }
+            
+            # Add interview-related fields
+            if type:
+                item['type'] = {'S': type}
+                
+            if programming_language:
+                item['programming_language'] = {'S': programming_language}
             
             # Add optional fields
             if 'context' in question_data and question_data['context']:

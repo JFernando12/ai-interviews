@@ -88,6 +88,8 @@ python main.py --mode single-video /path/to/video.mp4 --output-dir ./results
 - `video_path` (String): S3 path to video file (e.g., `videos/uuid/uuid/filename.mkv`)
 - `user_id` (String): User UUID
 - `state` (String): Processing state ('processing', 'completed', 'failed')
+- `type` (String): Interview type (e.g., 'technical', 'behavioral')
+- `programming_language` (String): Programming language (e.g., 'Python', 'JavaScript')
 - `created_at`, `updated_at` (String): ISO timestamps
 
 ### Questions Table (`app-interviews-questions`)
@@ -98,6 +100,8 @@ python main.py --mode single-video /path/to/video.mp4 --output-dir ./results
 - `answer` (String): Professional answer suggestion
 - `context` (String): Question context (optional)
 - `question_context` (String): Additional context (optional)
+- `type` (String): Interview type (from interview table)
+- `programming_language` (String): Programming language (from interview table)
 - `global` (Boolean): Whether question is globally applicable
 - `created_at`, `updated_at` (String): ISO timestamps
 
