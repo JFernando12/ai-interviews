@@ -17,3 +17,6 @@ build/
 venv/
 
 *.log
+*.wav
+*.flac
+*.zip

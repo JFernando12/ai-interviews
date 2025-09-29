@@ -46,7 +46,8 @@ class QuestionExtractor:
             - Extract complete questions asked by the interviewer
             - Do not include answers or responses from the interviewee
             - If the question is ambiguous like "Do you have any questions about any of that?" please provide short context to clarify the question, example: "The interviewer talked about the company culture".
-            - Do not include confidential information of the interviewee, such as names, locations, or specific project details instead, generalize them (e.g., "a previous project", "a team member", "my current company"). 
+            - Do not include confidential information of the interviewee, such as names, locations, or specific project details instead, generalize them (e.g., "a previous project", "a team member", "my current company").
+            - Do not include confidential information of the interviewer, such as names, salaries or company names, instead, generalize them (e.g., "the interviewer", "the company", "salary range from x to y").
             - Return ONLY a simple JSON array of objects with the attributes "question", "professional_answer" and optionally "question_context".
             - Format: [{{"question": "question 1", "professional_answer": "answer 1", "question_context": "Optional question context"}}, {{"question": "question 2", "professional_answer": "answer 2"}}]
             - Do not repeat questions
