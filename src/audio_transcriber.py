@@ -22,7 +22,7 @@ class AudioTranscriber:
     def start_transcription_job(self, 
                               audio_s3_uri: str, 
                               job_name: Optional[str] = None,
-                              language_code: str = 'en-US') -> str:
+                              language_code: str = 'es-ES') -> str:
         """
         Start an AWS Transcribe job
         
@@ -232,7 +232,7 @@ class AudioTranscriber:
     
     def transcribe_audio(self, 
                         audio_s3_uri: str, 
-                        language_code: str = 'en-US',
+                        language_code: str = 'es-ES',
                         wait_for_completion: bool = True) -> Dict:
         """
         Complete audio transcription pipeline

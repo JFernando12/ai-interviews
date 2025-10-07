@@ -205,7 +205,7 @@ class InterviewProcessingWorkflow:
             logger.info("Transcribing audio to text")
             transcription_results = self.audio_transcriber.transcribe_audio(
                 video_results['audio_s3_uri'],
-                language_code='en-US',
+                language_code='es-ES',
                 wait_for_completion=True
             )
             

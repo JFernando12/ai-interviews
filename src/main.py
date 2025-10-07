@@ -67,7 +67,7 @@ class VideoQuestionPipeline:
     def process_video_file(self, 
                           video_path: str,
                           output_dir: Optional[str] = None,
-                          language_code: str = 'en-US') -> Dict[str, Any]:
+                          language_code: str = 'es-ES') -> Dict[str, Any]:
         """
         Process a single video file through the complete pipeline
         
@@ -237,7 +237,7 @@ def main():
     parser.add_argument('--interview-id', help='Interview ID for single-interview mode')
     parser.add_argument('video_path', nargs='?', help='Path to video file (for single-video mode)')
     parser.add_argument('--output-dir', help='Output directory for results (single-video mode only)')
-    parser.add_argument('--language', default='en-US', help='Language code for transcription')
+    parser.add_argument('--language', default='es-ES', help='Language code for transcription')
     
     args = parser.parse_args()
     
